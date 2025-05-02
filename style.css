@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  h1, h2 {
+    text-align: center;
+    color: #2c3e50;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 180px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  .form-section,
+  .resource-input,
+  .action-section {
+    background-color: #fff;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .patient-list,
+  .result-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .patient-card {
+    padding: 10px;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.15);
+    background-color: #ecf0f1;
+  }
+  
+  .allocated {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+  }
+  
+  .skipped {
+    background-color: #f8d7da;
+    border: 2px solid #dc3545;
+  }
+  .analytics-panel {
+    background-color: #f0f8ff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  
+  @media (max-width: 768px) {
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+ 
+    .form-section,
+    .resource-input,
+    .action-section,
+    .analytics-panel {
+      padding: 10px;
+      margin: 10px 0;
+    }
+  
+    .patient-card {
+      width: 100%;
+    }
+  
+    button {
+      width: 100%;
+      margin-top: 5px;
+    }
+  
+    section h2 {
+      font-size: 18px;
+    }
+  }
+  @media print {
+    body {
+      background: white;
+      color: black;
+    }
+  
+    .form-section,
+    .resource-input,
+    .action-section,
+    #languageSelect,
+    input[type="file"],
+    canvas,
+    .patient-list {
+      display: none;
+    }
+  
+    .analytics-panel,
+    #allocationResult {
+      page-break-inside: avoid;
+    }
+  
+    .patient-card {
+      border: 1px solid #ccc;
+      margin: 5px 0;
+    }
+  }
+  

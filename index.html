@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital Resource Allocation</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- PWA Meta -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3498db">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+  
+</head>
+<body>
+  <div id="app" style="display:none;">
+    <h1>🏥 Hospital Resource Allocation Simulator</h1>
+
+    <!-- 🌐 Language Switch -->
+    <div style="text-align: center; margin: 10px;">
+      🌐 Language:
+      <select id="languageSelect" onchange="switchLanguage()">
+        <option value="en">English</option>
+        <option value="bn">বাংলা</option>
+      </select>
+    </div>
+
+    <!-- Resource Inputs -->
+    <section class="resource-input">
+      <label>Total Beds: <input type="number" id="totalBeds" min="0" value="2"></label>
+      <label>Total Ventilators: <input type="number" id="totalVents" min="0" value="2"></label>
+      <label>Total Doctors: <input type="number" id="totalDoctors" min="0" value="2"></label>
+    </section>
+
+    <!-- Patient Entry Form -->
+    <section class="form-section">
+      <h2 data-i18n="addPatient">Add Patient</h2>
+      <input type="text" id="name" placeholder="Name">
+      <input type="number" id="severity" placeholder="Severity (1-10)" min="1" max="10">
+      <input type="number" id="beds" placeholder="Beds Needed" min="0">
+      <input type="number" id="vents" placeholder="Ventilators Needed" min="0">
+      <input type="number" id="survival" placeholder="Survival Probability (0-1)" step="0.01" min="0" max="1">
+      <label><input type="checkbox" id="needsDoctor"> Requires Doctor</label><br>
+      <button onclick="addPatient()">➕ Add Patient</button>
+    </section>
+
+    <!-- Patient List -->
+    <section>
+      <h2>Patient List</h2>
+      <div id="patientList" class="patient-list"></div>
+    </section>
+
+    <!-- Actions -->
+    <section class="action-section">
+      <button onclick="allocateResources()" data-i18n="allocate">🚑 Allocate Resources</button>
+    </section>
+
+    <!-- Export/Import -->
+    <section>
+      <h2 data-i18n="export">Export Patient Data</h2>
+      <button onclick="exportJSON()" data-i18n="exportJSON">📤 Export as JSON</button>
+      <button onclick="exportCSV()" data-i18n="exportCSV">📤 Export as CSV</button>
+    </section>
+
+    <section>
+      <h2 data-i18n="import">Import Patient Data</h2>
+      <input type="file" id="importFile" accept=".json" onchange="importJSON()" />
+    </section>
+
+    <!-- Allocation Result -->
+    <section>
+      <h2>Allocation Results</h2>
+      <div id="allocationResult" class="result-section"></div>
+    </section>
+
+    <!-- Analytics Panel -->
+    <section>
+      <h2 data-i18n="analytics">📊 Allocation Analytics</h2>
+      <div id="analyticsPanel" class="analytics-panel"></div>
+    </section>
+
+    <!-- Chart -->
+    <section>
+      <h2 data-i18n="chart">📈 Allocation Chart</h2>
+      <canvas id="allocationChart" width="400" height="200"></canvas>
+    </section>
+    <section class="action-section">
+        <button onclick="window.print()">🖨️ Print Summary</button>
+      </section>      
+
+    <!-- Clear All Button -->
+    <section class="action-section">
+      <button onclick="clearAll()" data-i18n="clear">🧼 Clear All Data</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
