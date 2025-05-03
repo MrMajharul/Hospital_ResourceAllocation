@@ -1,0 +1,12 @@
+# Create a dictionary to store book information with a Bengali author
+book_info = {
+    "title": "Gitanjali",
+    "author": "Rabindranath Tagore",
+    "year": 1910,
+    "genre": "Poetry"
+}
+
+print("Title of the book:", book_info["title"])
+
+book_info["year"] = 2024
+print("Updated dictionary:", book_info)
