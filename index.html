@@ -4,16 +4,36 @@
   <meta charset="UTF-8">
   <title>Hospital Resource Allocation</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="apple-touch-startup-image" href="icons/splash-640x1136.png" media="(device-width: 320px)">
+  <link rel="apple-touch-startup-image" href="icons/splash-750x1334.png" media="(device-width: 375px)">
+  <link rel="apple-touch-startup-image" href="icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px)">
+  <link rel="apple-touch-startup-image" href="icons/splash-1242x2208.png" media="(device-width: 414px) and (device-height: 736px)">
+  <link rel="apple-touch-startup-image" href="icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px)">
+
+  <script src="script.js"></script>
+  <!-- Chart.js --> 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- PWA Meta -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#3498db">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hospital Simulator">
+<meta name="application-name" content="Hospital Simulator">
+<meta name="msapplication-navbutton-color" content="#3498db">
+<meta name="msapplication-starturl" content="/">
+
 <link rel="icon" href="icons/icon-192.png" type="image/png">
   
 </head>
 <body>
   <div id="app" style="display:none;">
-    <h1>🏥 Hospital Resource Allocation Simulator</h1>
+    <h1>🏥 Hospital Resource Allocation</h1>
+
+    <div style="text-align: right; margin: 10px;">
+      <button onclick="logout()">🚪 Logout</button>
+    </div>
 
     <!-- 🌐 Language Switch -->
     <div style="text-align: center; margin: 10px;">
