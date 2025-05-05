@@ -89,7 +89,7 @@ _No frameworks or libraries required._
 
 ## 👨‍💻 Author
 
-Developed by [Majharul Islam (https://github.com/MrMajharul)] – CSE Student at Green University of Bangladesh  
+Developed by [Majharul Islam](https://github.com/MrMajharul) – CSE Student at Green University of Bangladesh  
 
 ---
 
