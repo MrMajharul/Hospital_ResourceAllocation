@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments - Hospital Resource Allocator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-hospital"></i>
+            <span>HRA System</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="doctor-list.html">Doctors</a></li>
+            <li><a href="#" id="logoutBtn" class="btn-logout">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main class="departments-page">
+        <div class="page-header">
+            <h1>Hospital Departments</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="viewResourcesBtn">
+                    <i class="fas fa-boxes"></i> View Resources
+                </button>
+                <button class="btn btn-primary" id="findDoctorBtn">
+                    <i class="fas fa-user-md"></i> Find a Doctor
+                </button>
+            </div>
+        </div>
+
+        <div class="departments-container">
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchDepartments" placeholder="Search departments...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="filter-group">
+                    <select id="occupancyFilter">
+                        <option value="">All Occupancy</option>
+                        <option value="low">Low (< 50%)</option>
+                        <option value="medium">Medium (50-80%)</option>
+                        <option value="high">High (> 80%)</option>
+                    </select>
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="full">Full</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="departments-grid">
+                <!-- Departments will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Department Details Modal -->
+    <div class="modal" id="departmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Department Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="department-info">
+                <!-- Department info will be loaded here -->
+            </div>
+            <div class="department-stats">
+                <div class="stat-cards">
+                    <!-- Department statistics will be loaded here -->
+                </div>
+                <div class="stat-charts">
+                    <!-- Charts will be loaded here -->
+                </div>
+            </div>
+            <div class="department-staff">
+                <h3>Staff Members</h3>
+                <div class="staff-list">
+                    <!-- Staff list will be loaded here -->
+                </div>
+            </div>
+            <div class="department-resources">
+                <h3>Available Resources</h3>
+                <div class="resources-list">
+                    <!-- Resources list will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeDepartmentModal">Close</button>
+                <button class="btn btn-primary" id="viewScheduleBtn">View Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .departments-page {
+            padding: 2rem 5%;
+            margin-top: 4rem;
+        }
+
+        .departments-container {
+            margin-bottom: 2rem;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .department-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .department-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .department-header {
+            position: relative;
+            padding: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .department-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .department-name i {
+            font-size: 1.25rem;
+        }
+
+        .department-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .department-body {
+            padding: 1.5rem;
+        }
+
+        .department-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-medium);
+        }
+
+        .department-info p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .department-info i {
+            color: var(--primary-color);
+            width: 1.5rem;
+        }
+
+        .department-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .occupancy-bar {
+            height: 4px;
+            background-color: var(--gray-light);
+            border-radius: 2px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .occupancy-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .occupancy-low {
+            background-color: var(--success-color);
+        }
+
+        .occupancy-medium {
+            background-color: var(--warning-color);
+        }
+
+        .occupancy-high {
+            background-color: var(--error-color);
+        }
+
+        .staff-list, .resources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .staff-card, .resource-card {
+            padding: 1rem;
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .staff-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .stat-charts {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .departments-page {
+                padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .departments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .department-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .staff-list, .resources-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/departments.js"></script>
+</body>
+</html> 

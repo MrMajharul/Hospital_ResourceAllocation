@@ -1,0 +1,480 @@
+/* Admin Panel Specific Styles */
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Doctor List Styles */
+.doctor-grid {
+    margin: 2rem 0;
+}
+
+.doctor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.doctor-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.doctor-card-header {
+    position: relative;
+    padding: 1.5rem;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #2c3e50 100%);
+    color: white;
+}
+
+.doctor-card-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin-bottom: 1rem;
+}
+
+.doctor-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.doctor-status.active {
+    background: #28a745;
+    color: white;
+}
+
+.doctor-status.on-leave {
+    background: #dc3545;
+    color: white;
+}
+
+.doctor-card-body {
+    padding: 1.5rem;
+}
+
+.doctor-specialization {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.doctor-info {
+    margin-bottom: 1rem;
+}
+
+.doctor-info p {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.doctor-info i {
+    width: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.doctor-contact {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.doctor-contact p {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.doctor-contact i {
+    width: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.doctor-certifications {
+    margin-bottom: 1rem;
+}
+
+.doctor-certifications h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.doctor-certifications ul {
+    list-style: none;
+    padding: 0;
+}
+
+.doctor-certifications li {
+    padding: 0.25rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.doctor-certifications li:before {
+    content: '✓';
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.doctor-load {
+    margin-top: 1rem;
+}
+
+.load-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.load-fill {
+    height: 100%;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.doctor-card-footer {
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    display: flex;
+    gap: 1rem;
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.on-leave {
+    background: #dc3545;
+    color: white;
+}
+
+/* Doctor Details Modal */
+.doctor-details {
+    margin-top: 1.5rem;
+}
+
+.doctor-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.doctor-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-item h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.certifications-section {
+    margin-bottom: 1.5rem;
+}
+
+.current-load {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+/* Feedback Cards */
+.feedback-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.rating {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+/* Patient Details Modal */
+.patient-details {
+    margin: 1rem 0;
+}
+
+.patient-details p {
+    margin: 0.5rem 0;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Resource Alerts */
+.alerts-container {
+    margin-bottom: 2rem;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.alert i {
+    font-size: 1.2rem;
+}
+
+/* Export Button */
+.btn-export {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-export:hover {
+    background: var(--primary-dark);
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-active {
+    background: #28a745;
+}
+
+.status-inactive {
+    background: #dc3545;
+}
+
+/* Resource Usage Bars */
+.resource-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.resource-bar-fill {
+    height: 100%;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.resource-bar-critical {
+    background: #dc3545;
+}
+
+/* Print Styles */
+@media print {
+    .sidebar,
+    .action-buttons,
+    .btn-export {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .data-table {
+        box-shadow: none;
+    }
+
+    .chart-container {
+        page-break-inside: avoid;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .feedback-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rating {
+        margin-top: 0.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .search-bar {
+        flex-direction: column;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+    .doctor-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-card-footer {
+        flex-direction: column;
+    }
+
+    .doctor-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .doctor-card,
+    .feedback-card,
+    .modal-content,
+    .data-table,
+    .chart-container {
+        background: #2c3e50;
+        color: white;
+    }
+
+    .form-group input,
+    .form-group select {
+        background: #34495e;
+        color: white;
+        border-color: #4a5568;
+    }
+
+    th {
+        background: #34495e;
+        color: white;
+    }
+
+    td {
+        border-color: #4a5568;
+    }
+
+    .alert-warning {
+        background: #462c03;
+        color: #ffd700;
+        border-color: #8b6914;
+    }
+
+    .doctor-card,
+    .doctor-details {
+        background: #2c3e50;
+        color: white;
+    }
+
+    .doctor-contact,
+    .doctor-card-footer,
+    .current-load {
+        background: #34495e;
+    }
+
+    .load-bar {
+        background: #4a5568;
+    }
+
+    .doctor-certifications li:before {
+        color: #60a5fa;
+    }
+} 

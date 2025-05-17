@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Hospital Resource Allocator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2c3e50 100%);
+        }
+
+        .admin-login-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .admin-login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-login-header i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .admin-login-header h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .role-select {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            appearance: none;
+            background: white;
+        }
+
+        .btn-admin-login {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-admin-login:hover {
+            background: var(--primary-dark);
+        }
+
+        .back-to-main {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .back-to-main a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .back-to-main a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="admin-login-card">
+            <div class="admin-login-header">
+                <i class="fas fa-user-shield"></i>
+                <h1>Admin Portal</h1>
+                <p>Hospital Resource Allocator</p>
+            </div>
+            <form id="adminLoginForm" class="admin-login-form">
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="adminEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="adminPassword" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user-tag"></i>
+                    <select class="role-select" id="adminRole" required>
+                        <option value="">Select Role</option>
+                        <option value="admin">Administrator</option>
+                        <option value="staff">Staff</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-admin-login">Login</button>
+            </form>
+            <div class="back-to-main">
+                <a href="index.html">← Back to Main Site</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const role = document.getElementById('adminRole').value;
+
+            // Mock admin credentials
+            const validCredentials = {
+                'admin@hospital.com': {
+                    password: 'admin123',
+                    role: 'admin'
+                },
+                'staff@hospital.com': {
+                    password: 'staff123',
+                    role: 'staff'
+                },
+                'doctor@hospital.com': {
+                    password: 'doctor123',
+                    role: 'doctor'
+                }
+            };
+
+            if (validCredentials[email] && 
+                validCredentials[email].password === password && 
+                validCredentials[email].role === role) {
+                
+                // Store admin session
+                localStorage.setItem('adminSession', JSON.stringify({
+                    email: email,
+                    role: role,
+                    timestamp: new Date().getTime()
+                }));
+
+                // Redirect based on role
+                if (role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else if (role === 'staff') {
+                    window.location.href = 'staff-dashboard.html';
+                } else {
+                    window.location.href = 'doctor-dashboard.html';
+                }
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

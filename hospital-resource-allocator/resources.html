@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - Hospital Resource Allocator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-hospital"></i>
+            <span>HRA System</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="resources.html" class="active">Resources</a></li>
+            <li><a href="doctor-list.html">Doctors</a></li>
+            <li><a href="#" id="logoutBtn" class="btn-logout">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main class="resources-page">
+        <div class="page-header">
+            <h1>Resource Management</h1>
+            <button class="btn btn-primary" id="newResourceBtn">
+                <i class="fas fa-plus"></i> Add Resource
+            </button>
+        </div>
+
+        <div class="resources-container">
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchResources" placeholder="Search resources...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="filter-group">
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="room">Room</option>
+                        <option value="supplies">Medical Supplies</option>
+                        <option value="bed">Hospital Bed</option>
+                    </select>
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="available">Available</option>
+                        <option value="in-use">In Use</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="reserved">Reserved</option>
+                    </select>
+                    <select id="departmentFilter">
+                        <option value="">All Departments</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="icu">ICU</option>
+                        <option value="surgery">Surgery</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="cardiology">Cardiology</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="resources-grid">
+                <!-- Resources will be loaded here by JavaScript -->
+            </div>
+
+            <div class="resources-stats">
+                <div class="stat-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Available</h4>
+                    <p id="availableCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h4>In Use</h4>
+                    <p id="inUseCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tools"></i>
+                    <h4>Maintenance</h4>
+                    <p id="maintenanceCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bookmark"></i>
+                    <h4>Reserved</h4>
+                    <p id="reservedCount">0</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Resource Modal -->
+    <div class="modal" id="resourceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Resource</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="resourceForm">
+                <div class="form-group">
+                    <label for="name">Resource Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter resource name">
+                </div>
+                <div class="form-group">
+                    <label for="type">Resource Type</label>
+                    <select id="type" name="type" required>
+                        <option value="">Select type</option>
+                        <option value="equipment">Equipment</option>
+                        <option value="room">Room</option>
+                        <option value="supplies">Medical Supplies</option>
+                        <option value="bed">Hospital Bed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" name="department" required>
+                        <option value="">Select department</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="icu">ICU</option>
+                        <option value="surgery">Surgery</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="cardiology">Cardiology</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" required placeholder="Enter location (e.g., Floor 2, Room 201)">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3" placeholder="Enter resource description..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelResourceBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Resource</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .resources-page {
+            padding: 2rem 5%;
+            margin-top: 4rem;
+        }
+
+        .resources-container {
+            margin-bottom: 2rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .resource-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .resource-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .resource-type {
+            font-size: 0.875rem;
+            color: var(--gray-medium);
+        }
+
+        .resource-details {
+            margin-bottom: 1rem;
+        }
+
+        .resource-details p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-details i {
+            color: var(--primary-color);
+            width: 1.5rem;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .resources-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .badge-available {
+            background-color: var(--success-color);
+        }
+
+        .badge-in-use {
+            background-color: var(--primary-color);
+        }
+
+        .badge-maintenance {
+            background-color: #f59e0b;
+        }
+
+        .badge-reserved {
+            background-color: #8b5cf6;
+        }
+
+        @media (max-width: 768px) {
+            .resources-page {
+                padding: 1rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resources-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/resources.js"></script>
+</body>
+</html> 

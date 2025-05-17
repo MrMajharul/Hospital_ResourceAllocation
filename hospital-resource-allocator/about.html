@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Hospital Resource Allocator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-hospital"></i>
+            <span>HRA System</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="doctor-list.html">Doctors</a></li>
+            <li><a href="#" id="logoutBtn" class="btn-logout">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main class="about-page">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Leading Healthcare Through Innovation</h1>
+                <p>Our state-of-the-art resource allocation system ensures optimal healthcare delivery</p>
+            </div>
+        </div>
+
+        <section class="mission-section">
+            <div class="section-content">
+                <h2>Our Mission</h2>
+                <p>To provide exceptional healthcare services through efficient resource management and cutting-edge technology, ensuring the best possible patient outcomes.</p>
+                <div class="mission-cards">
+                    <div class="mission-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Patient-Centric Care</h3>
+                        <p>Putting patients first in every decision we make</p>
+                    </div>
+                    <div class="mission-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Efficiency</h3>
+                        <p>Optimizing resource allocation for maximum impact</p>
+                    </div>
+                    <div class="mission-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Collaboration</h3>
+                        <p>Working together to achieve better outcomes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="section-content">
+                <h2>System Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Smart Scheduling</h3>
+                        <p>Automated appointment management with intelligent resource allocation</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-hospital-user"></i>
+                        </div>
+                        <h3>Patient Management</h3>
+                        <p>Comprehensive patient records and history tracking</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>Resource Analytics</h3>
+                        <p>Real-time monitoring and optimization of hospital resources</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>Staff Management</h3>
+                        <p>Efficient scheduling and workload distribution for medical staff</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="section-content">
+                <h2>Our Impact</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Resource Utilization</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">50k+</div>
+                        <div class="stat-label">Patients Served</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">200+</div>
+                        <div class="stat-label">Medical Staff</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Support</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <div class="section-content">
+                <h2>Leadership Team</h2>
+                <div class="team-grid">
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=John+Smith&background=random" alt="Dr. John Smith">
+                        <h3>Dr. John Smith</h3>
+                        <p class="role">Chief Medical Officer</p>
+                        <p class="description">20+ years of experience in healthcare management</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=random" alt="Dr. Sarah Johnson">
+                        <h3>Dr. Sarah Johnson</h3>
+                        <p class="role">Head of Cardiology</p>
+                        <p class="description">Leading expert in cardiac care</p>
+                    </div>
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=Michael+Chen&background=random" alt="Dr. Michael Chen">
+                        <h3>Dr. Michael Chen</h3>
+                        <p class="role">Head of Emergency</p>
+                        <p class="description">Specialist in emergency medicine</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="section-content">
+                <h2>Get in Touch</h2>
+                <div class="contact-cards">
+                    <div class="contact-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Location</h3>
+                        <p>123 Healthcare Ave<br>Medical District<br>City, State 12345</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-phone"></i>
+                        <h3>Phone</h3>
+                        <p>Emergency: (555) 911-0000<br>General: (555) 123-4567</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>info@hospital.com<br>support@hospital.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        .about-page {
+            padding-bottom: 4rem;
+        }
+
+        .hero-section {
+            height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://source.unsplash.com/1600x900/?hospital') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 4rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-content h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .mission-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .mission-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .team-card .role {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 300px;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .section-content {
+                padding: 0 1rem;
+            }
+
+            .mission-cards,
+            .features-grid,
+            .stats-grid,
+            .team-grid,
+            .contact-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html> 

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Hospital Resource Allocator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --sidebar-width: 250px;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-color);
+            padding: 2rem 1rem;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-header i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: background 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 0.75rem;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-bar input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f5f5f5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-hospital-user"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#overview" class="nav-link active">
+                        <i class="fas fa-chart-line"></i>
+                        Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#patients" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Patients
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#doctors" class="nav-link">
+                        <i class="fas fa-user-md"></i>
+                        Doctors
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#resources" class="nav-link">
+                        <i class="fas fa-hospital"></i>
+                        Resources
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reports" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        Reports
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#feedback" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" id="logoutBtn" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h1>Dashboard Overview</h1>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Patients</h3>
+                    <div class="stat-value">1,234</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Available Beds</h3>
+                    <div class="stat-value">45/100</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Doctors</h3>
+                    <div class="stat-value">48</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Critical Patients</h3>
+                    <div class="stat-value">12</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>Patient Admissions</h3>
+                    <canvas id="admissionsChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Department Occupancy</h3>
+                    <canvas id="occupancyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>Patient Database</h2>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search patients...">
+                        <button class="btn btn-primary">Export CSV</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Severity</th>
+                            <th>Doctor</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientTableBody">
+                        <!-- Patient data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>Doctors List</h2>
+                    <div class="search-bar">
+                        <input type="text" id="doctorSearch" placeholder="Search doctors...">
+                        <button class="btn btn-primary btn-add-doctor">Add New Doctor</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Specialization</th>
+                            <th>Experience</th>
+                            <th>Status</th>
+                            <th>Current Load</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="doctorTableBody">
+                        <!-- Doctor data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="doctor-grid">
+                <h2>Doctor Details</h2>
+                <div id="doctorList" class="doctor-cards">
+                    <!-- Doctor cards will be populated here -->
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                Warning: ICU is currently at 90% capacity
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div id="addDoctorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Doctor</h2>
+            <form id="addDoctorForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <select required>
+                        <option value="">Select Department</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="emergency">Emergency</option>
+                        <option value="neurology">Neurology</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Doctor</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check admin session
+        const adminSession = JSON.parse(localStorage.getItem('adminSession'));
+        if (!adminSession || Date.now() - adminSession.timestamp > 24 * 60 * 60 * 1000) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Mock patient data
+        const patients = [
+            { id: 'P001', name: 'John Doe', age: 45, severity: 8, doctor: 'Dr. Smith', status: 'Critical' },
+            { id: 'P002', name: 'Jane Smith', age: 32, severity: 5, doctor: 'Dr. Johnson', status: 'Stable' },
+            { id: 'P003', name: 'Bob Wilson', age: 58, severity: 7, doctor: 'Dr. Brown', status: 'Critical' },
+        ];
+
+        // Populate patient table
+        const patientTableBody = document.getElementById('patientTableBody');
+        patients.forEach(patient => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${patient.id}</td>
+                <td>${patient.name}</td>
+                <td>${patient.age}</td>
+                <td>${patient.severity}</td>
+                <td>${patient.doctor}</td>
+                <td>${patient.status}</td>
+                <td class="action-buttons">
+                    <button class="btn btn-secondary">View</button>
+                    <button class="btn btn-danger">Delete</button>
+                </td>
+            `;
+            patientTableBody.appendChild(row);
+        });
+
+        // Initialize Charts
+        const admissionsCtx = document.getElementById('admissionsChart').getContext('2d');
+        new Chart(admissionsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Patient Admissions',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            }
+        });
+
+        const occupancyCtx = document.getElementById('occupancyChart').getContext('2d');
+        new Chart(occupancyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['ICU', 'Emergency', 'Cardiology', 'Neurology'],
+                datasets: [{
+                    label: 'Occupancy Rate (%)',
+                    data: [90, 75, 60, 45],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                }]
+            }
+        });
+
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('adminSession');
+            window.location.href = 'admin-login.html';
+        });
+
+        // Mock doctor data with extended details
+        const doctors = [
+            { 
+                id: 'D001', 
+                name: 'Dr. Abdul Rahman', 
+                department: 'Cardiology',
+                specialization: 'Interventional Cardiology',
+                experience: '15 years',
+                status: 'Active',
+                currentLoad: '8 patients',
+                education: 'MBBS - Dhaka Medical College, MD - BSMMU',
+                availability: 'Sat-Thu, 9AM-5PM',
+                contact: '+880 1711-123456',
+                email: 'dr.rahman@hospital.com',
+                certifications: ['FCPS (Cardiology)', 'Fellowship in Interventional Cardiology'],
+                languages: ['Bengali', 'English']
+            },
+            { 
+                id: 'D002', 
+                name: 'Dr. Fatima Begum', 
+                department: 'Gynecology',
+                specialization: 'Obstetrics & Gynecology',
+                experience: '12 years',
+                status: 'Active',
+                currentLoad: '6 patients',
+                education: 'MBBS - Chittagong Medical College, FCPS - BSMMU',
+                availability: 'Sat-Thu, 10AM-6PM',
+                contact: '+880 1712-234567',
+                email: 'dr.fatima@hospital.com',
+                certifications: ['FCPS (Gynecology & Obstetrics)', 'Training in Advanced Laparoscopy'],
+                languages: ['Bengali', 'English']
+            },
+            { 
+                id: 'D003', 
+                name: 'Dr. Kamal Hossain', 
+                department: 'Neurology',
+                specialization: 'Neurosurgery',
+                experience: '20 years',
+                status: 'Active',
+                currentLoad: '5 patients',
+                education: 'MBBS - Rajshahi Medical College, FCPS - BSMMU',
+                availability: 'Sat-Wed, 9AM-4PM',
+                contact: '+880 1713-345678',
+                email: 'dr.kamal@hospital.com',
+                certifications: ['FCPS (Neurosurgery)', 'Fellowship in Spine Surgery'],
+                languages: ['Bengali', 'English', 'Hindi']
+            },
+            {
+                id: 'D004',
+                name: 'Dr. Nusrat Jahan',
+                department: 'Pediatrics',
+                specialization: 'Pediatric Medicine',
+                experience: '10 years',
+                status: 'Active',
+                currentLoad: '7 patients',
+                education: 'MBBS - Sylhet Medical College, DCH - BICH',
+                availability: 'Sat-Thu, 8AM-2PM',
+                contact: '+880 1714-456789',
+                email: 'dr.nusrat@hospital.com',
+                certifications: ['FCPS (Pediatrics)', 'Advanced Pediatric Life Support'],
+                languages: ['Bengali', 'English']
+            },
+            {
+                id: 'D005',
+                name: 'Dr. Mahmud Hassan',
+                department: 'Medicine',
+                specialization: 'Internal Medicine',
+                experience: '18 years',
+                status: 'Active',
+                currentLoad: '9 patients',
+                education: 'MBBS - Mymensingh Medical College, FCPS - BSMMU',
+                availability: 'Sat-Thu, 11AM-7PM',
+                contact: '+880 1715-567890',
+                email: 'dr.mahmud@hospital.com',
+                certifications: ['FCPS (Medicine)', 'Diploma in Diabetes'],
+                languages: ['Bengali', 'English', 'Arabic']
+            },
+            {
+                id: 'D006',
+                name: 'Dr. Shaila Akter',
+                department: 'Dermatology',
+                specialization: 'Dermatology & Venereology',
+                experience: '8 years',
+                status: 'Active',
+                currentLoad: '4 patients',
+                education: 'MBBS - Khulna Medical College, DDV - BSMMU',
+                availability: 'Sun-Thu, 10AM-4PM',
+                contact: '+880 1716-678901',
+                email: 'dr.shaila@hospital.com',
+                certifications: ['DDV', 'Advanced Cosmetic Dermatology'],
+                languages: ['Bengali', 'English']
+            },
+            {
+                id: 'D007',
+                name: 'Dr. Zahirul Islam',
+                department: 'Orthopedics',
+                specialization: 'Orthopedic Surgery',
+                experience: '16 years',
+                status: 'On Leave',
+                currentLoad: '0 patients',
+                education: 'MBBS - Rangpur Medical College, MS - BSMMU',
+                availability: 'On Leave until July 15th',
+                contact: '+880 1717-789012',
+                email: 'dr.zahirul@hospital.com',
+                certifications: ['FCPS (Orthopedics)', 'Fellowship in Joint Replacement'],
+                languages: ['Bengali', 'English', 'Urdu']
+            },
+            {
+                id: 'D008',
+                name: 'Dr. Tasnim Rahman',
+                department: 'ENT',
+                specialization: 'Otolaryngology',
+                experience: '11 years',
+                status: 'Active',
+                currentLoad: '5 patients',
+                education: 'MBBS - Comilla Medical College, FCPS - BSMMU',
+                availability: 'Sat-Wed, 9AM-3PM',
+                contact: '+880 1718-890123',
+                email: 'dr.tasnim@hospital.com',
+                certifications: ['FCPS (ENT)', 'Advanced Endoscopic Sinus Surgery'],
+                languages: ['Bengali', 'English']
+            }
+        ];
+
+        // Populate doctor table
+        const doctorTableBody = document.getElementById('doctorTableBody');
+        doctors.forEach(doctor => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${doctor.id}</td>
+                <td>${doctor.name}</td>
+                <td>${doctor.department}</td>
+                <td>${doctor.specialization}</td>
+                <td>${doctor.experience}</td>
+                <td><span class="status-badge ${doctor.status.toLowerCase()}">${doctor.status}</span></td>
+                <td>${doctor.currentLoad}</td>
+                <td class="action-buttons">
+                    <button class="btn btn-secondary" onclick="viewDoctorDetails('${doctor.id}')">View</button>
+                    <button class="btn btn-primary" onclick="editDoctor('${doctor.id}')">Edit</button>
+                    <button class="btn btn-danger" onclick="deleteDoctor('${doctor.id}')">Delete</button>
+                </td>
+            `;
+            doctorTableBody.appendChild(row);
+        });
+
+        // Populate doctor cards
+        const doctorList = document.getElementById('doctorList');
+        doctors.forEach(doctor => {
+            const card = document.createElement('div');
+            card.className = 'doctor-card';
+            card.innerHTML = `
+                <div class="doctor-card-header">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random" alt="${doctor.name}">
+                    <div class="doctor-status ${doctor.status.toLowerCase()}">${doctor.status}</div>
+                </div>
+                <div class="doctor-card-body">
+                    <h3>${doctor.name}</h3>
+                    <p class="doctor-specialization">${doctor.specialization}</p>
+                    <div class="doctor-info">
+                        <p><i class="fas fa-hospital"></i> ${doctor.department}</p>
+                        <p><i class="fas fa-user-md"></i> ${doctor.experience}</p>
+                        <p><i class="fas fa-graduation-cap"></i> ${doctor.education}</p>
+                        <p><i class="fas fa-clock"></i> ${doctor.availability}</p>
+                        <p><i class="fas fa-language"></i> ${doctor.languages.join(', ')}</p>
+                    </div>
+                    <div class="doctor-contact">
+                        <p><i class="fas fa-phone"></i> ${doctor.contact}</p>
+                        <p><i class="fas fa-envelope"></i> ${doctor.email}</p>
+                    </div>
+                    <div class="doctor-certifications">
+                        <h4>Certifications</h4>
+                        <ul>
+                            ${doctor.certifications.map(cert => `<li>${cert}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="doctor-load">
+                        <h4>Current Patient Load</h4>
+                        <div class="load-bar">
+                            <div class="load-fill" style="width: ${parseInt(doctor.currentLoad)}0%"></div>
+                        </div>
+                        <p>${doctor.currentLoad}</p>
+                    </div>
+                </div>
+                <div class="doctor-card-footer">
+                    <button class="btn btn-secondary" onclick="viewDoctorSchedule('${doctor.id}')">View Schedule</button>
+                    <button class="btn btn-primary" onclick="editDoctor('${doctor.id}')">Edit Details</button>
+                </div>
+            `;
+            doctorList.appendChild(card);
+        });
+
+        // Doctor management functions
+        function viewDoctorDetails(id) {
+            const doctor = doctors.find(d => d.id === id);
+            if (!doctor) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Doctor Details</h2>
+                    <div class="doctor-details">
+                        <div class="doctor-header">
+                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random" alt="${doctor.name}">
+                            <div>
+                                <h3>${doctor.name}</h3>
+                                <p>${doctor.specialization}</p>
+                                <span class="status-badge ${doctor.status.toLowerCase()}">${doctor.status}</span>
+                            </div>
+                        </div>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <h4>Department</h4>
+                                <p>${doctor.department}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Experience</h4>
+                                <p>${doctor.experience}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Education</h4>
+                                <p>${doctor.education}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Availability</h4>
+                                <p>${doctor.availability}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Contact</h4>
+                                <p>${doctor.contact}</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Email</h4>
+                                <p>${doctor.email}</p>
+                            </div>
+                        </div>
+                        <div class="certifications-section">
+                            <h4>Certifications</h4>
+                            <ul>
+                                ${doctor.certifications.map(cert => `<li>${cert}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="current-load">
+                            <h4>Current Patient Load</h4>
+                            <div class="load-bar">
+                                <div class="load-fill" style="width: ${parseInt(doctor.currentLoad)}0%"></div>
+                            </div>
+                            <p>${doctor.currentLoad}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            modal.querySelector('.close').onclick = () => {
+                document.body.removeChild(modal);
+            };
+        }
+
+        function editDoctor(id) {
+            // Implementation for editing doctor details
+            console.log('Edit doctor:', id);
+        }
+
+        function deleteDoctor(id) {
+            if (confirm('Are you sure you want to delete this doctor?')) {
+                console.log('Delete doctor:', id);
+                // Implementation for deleting doctor
+            }
+        }
+
+        function viewDoctorSchedule(id) {
+            // Implementation for viewing doctor's schedule
+            console.log('View schedule for doctor:', id);
+        }
+
+        // Doctor search functionality
+        document.getElementById('doctorSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredDoctors = doctors.filter(doctor => 
+                doctor.name.toLowerCase().includes(searchTerm) ||
+                doctor.department.toLowerCase().includes(searchTerm) ||
+                doctor.specialization.toLowerCase().includes(searchTerm)
+            );
+            
+            // Update both table and cards
+            updateDoctorTable(filteredDoctors);
+            updateDoctorCards(filteredDoctors);
+        });
+
+        function updateDoctorTable(filteredDoctors) {
+            doctorTableBody.innerHTML = '';
+            filteredDoctors.forEach(doctor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${doctor.id}</td>
+                    <td>${doctor.name}</td>
+                    <td>${doctor.department}</td>
+                    <td>${doctor.specialization}</td>
+                    <td>${doctor.experience}</td>
+                    <td><span class="status-badge ${doctor.status.toLowerCase()}">${doctor.status}</span></td>
+                    <td>${doctor.currentLoad}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-secondary" onclick="viewDoctorDetails('${doctor.id}')">View</button>
+                        <button class="btn btn-primary" onclick="editDoctor('${doctor.id}')">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteDoctor('${doctor.id}')">Delete</button>
+                    </td>
+                `;
+                doctorTableBody.appendChild(row);
+            });
+        }
+
+        function updateDoctorCards(filteredDoctors) {
+            doctorList.innerHTML = '';
+            filteredDoctors.forEach(doctor => {
+                const card = document.createElement('div');
+                card.className = 'doctor-card';
+                card.innerHTML = `
+                    <div class="doctor-card-header">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=random" alt="${doctor.name}">
+                        <div class="doctor-status ${doctor.status.toLowerCase()}">${doctor.status}</div>
+                    </div>
+                    <div class="doctor-card-body">
+                        <h3>${doctor.name}</h3>
+                        <p class="doctor-specialization">${doctor.specialization}</p>
+                        <div class="doctor-info">
+                            <p><i class="fas fa-hospital"></i> ${doctor.department}</p>
+                            <p><i class="fas fa-user-md"></i> ${doctor.experience}</p>
+                            <p><i class="fas fa-graduation-cap"></i> ${doctor.education}</p>
+                            <p><i class="fas fa-clock"></i> ${doctor.availability}</p>
+                            <p><i class="fas fa-language"></i> ${doctor.languages.join(', ')}</p>
+                        </div>
+                        <div class="doctor-contact">
+                            <p><i class="fas fa-phone"></i> ${doctor.contact}</p>
+                            <p><i class="fas fa-envelope"></i> ${doctor.email}</p>
+                        </div>
+                        <div class="doctor-certifications">
+                            <h4>Certifications</h4>
+                            <ul>
+                                ${doctor.certifications.map(cert => `<li>${cert}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="doctor-load">
+                            <h4>Current Patient Load</h4>
+                            <div class="load-bar">
+                                <div class="load-fill" style="width: ${parseInt(doctor.currentLoad)}0%"></div>
+                            </div>
+                            <p>${doctor.currentLoad}</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card-footer">
+                        <button class="btn btn-secondary" onclick="viewDoctorSchedule('${doctor.id}')">View Schedule</button>
+                        <button class="btn btn-primary" onclick="editDoctor('${doctor.id}')">Edit Details</button>
+                    </div>
+                `;
+                doctorList.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors - Hospital Resource Allocator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-hospital"></i>
+            <span>HRA System</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="appointments.html">Appointments</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="doctor-list.html" class="active">Doctors</a></li>
+            <li><a href="#" id="logoutBtn" class="btn-logout">Logout</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <main class="doctors-page">
+        <div class="page-header">
+            <h1>Our Doctors</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="viewDepartmentsBtn">
+                    <i class="fas fa-hospital"></i> View Departments
+                </button>
+                <button class="btn btn-primary" id="scheduleAppointmentBtn">
+                    <i class="fas fa-calendar-plus"></i> Schedule Appointment
+                </button>
+            </div>
+        </div>
+
+        <div class="doctors-container">
+            <div class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchDoctors" placeholder="Search doctors by name or specialization...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="filter-group">
+                    <select id="specializationFilter">
+                        <option value="">All Specializations</option>
+                        <option value="cardiology">Cardiology</option>
+                        <option value="neurology">Neurology</option>
+                        <option value="orthopedics">Orthopedics</option>
+                        <option value="pediatrics">Pediatrics</option>
+                        <option value="psychiatry">Psychiatry</option>
+                        <option value="surgery">Surgery</option>
+                    </select>
+                    <select id="availabilityFilter">
+                        <option value="">All Availability</option>
+                        <option value="available">Available Now</option>
+                        <option value="scheduled">Scheduled Today</option>
+                        <option value="unavailable">Unavailable</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="view-toggle">
+                <button class="btn btn-small active" data-view="grid">
+                    <i class="fas fa-th"></i> Grid View
+                </button>
+                <button class="btn btn-small" data-view="list">
+                    <i class="fas fa-list"></i> List View
+                </button>
+            </div>
+
+            <div class="doctors-grid active-view">
+                <!-- Doctors will be loaded here by JavaScript -->
+            </div>
+
+            <div class="doctors-list">
+                <!-- List view of doctors will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Doctor Details Modal -->
+    <div class="modal" id="doctorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Doctor Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="doctor-profile">
+                <!-- Doctor profile will be loaded here -->
+            </div>
+            <div class="doctor-schedule">
+                <h3>Available Time Slots</h3>
+                <div class="time-slots">
+                    <!-- Time slots will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeDoctorModal">Close</button>
+                <button class="btn btn-primary" id="bookAppointmentBtn">Book Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .doctors-page {
+            padding: 2rem 5%;
+            margin-top: 4rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .doctors-container {
+            margin-bottom: 2rem;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .doctor-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .doctor-header {
+            position: relative;
+            padding-top: 75%;
+            background-color: var(--gray-light);
+        }
+
+        .doctor-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-info {
+            padding: 1.5rem;
+        }
+
+        .doctor-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-specialization {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .doctor-details {
+            margin-bottom: 1rem;
+        }
+
+        .doctor-details p {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doctor-details i {
+            color: var(--primary-color);
+            width: 1.5rem;
+        }
+
+        .doctor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .doctors-list {
+            display: none;
+        }
+
+        .doctors-list .doctor-card {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .doctors-list .doctor-header {
+            padding-top: 0;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .doctor-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .status-available {
+            background-color: var(--success-color);
+        }
+
+        .status-scheduled {
+            background-color: var(--primary-color);
+        }
+
+        .status-unavailable {
+            background-color: var(--error-color);
+        }
+
+        .doctor-profile {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .time-slot {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .time-slot:hover:not(.slot-unavailable) {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .slot-unavailable {
+            background-color: var(--gray-light);
+            color: var(--gray-medium);
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .doctors-page {
+                padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .doctors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doctors-list .doctor-card {
+                flex-direction: column;
+            }
+
+            .doctors-list .doctor-header {
+                width: 100%;
+                padding-top: 75%;
+            }
+
+            .doctor-profile {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/doctors.js"></script>
+</body>
+</html> 
